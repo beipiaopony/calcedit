@@ -1,0 +1,6 @@
+﻿variable,desc
+&CurYear,当前年
+&BudgetMonth,当前预算月份
+&CurMonth,当前月
+{currentEntity},运行提示变量-组织
+BU00,测试

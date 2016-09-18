@@ -6,6 +6,11 @@ public class HspObject {
 	private String objectName;
 	private String objectParent;
 	private String objectType;
+	private String custom1;
+	private String custom2;
+	private String custom3;
+	private String custom4;
+	
 	
 	public String getObjectCode() {
 		return objectCode;
@@ -33,7 +38,7 @@ public class HspObject {
 	public void setObjectType(String objectType) {
 		this.objectType = objectType;
 	}
-	protected HspObject(String objectCode, String objectName, String objectParent, String objectType) {
+	public HspObject(String objectCode, String objectName, String objectParent, String objectType) {
 		super();
 		this.objectCode = objectCode;
 		this.objectName = objectName;

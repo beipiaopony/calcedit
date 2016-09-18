@@ -18,6 +18,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
@@ -36,6 +37,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import com.noahark.calcedit.analysis.AnalyzerMember;
+import com.noahark.calcedit.db.HspObject;
+import com.noahark.calcedit.file.ReadFile;
 
 /**
  * Hello world!
@@ -67,12 +70,13 @@ public class App extends JFrame implements ActionListener {
 		jp.add(getJLabel3());
 		// jp.add(getJComboBox());
 		// jp.add(getJLabel2());
-		jp.add(new JLabel());
-		jp.add(getJButtonzero());
-		jp.add(new JLabel());
-		jp.add(new JLabel());
+		//jp.add(new JLabel());
+		//jp.add(getJButtonzero());
+		
+		//jp.add(new JLabel());
 		jp.add(getJButtoncancel());
 		jp.add(new JLabel());
+		jp.add(getJButton4());
 
 		jp.add(getJButtonok());
 		jp.add(new JLabel());
@@ -85,8 +89,9 @@ public class App extends JFrame implements ActionListener {
 		// ImageLabel label = new ImageLabel(new
 		// ImageIcon("images/reactor.png"));
 		this.setFont(new Font(Font.DIALOG_INPUT, Font.BOLD, 18));
-		this.setTitle("小马哥-calculator");
+		this.setTitle("小马哥");
 		
+		/*
 		Image image;
 		try {
 			image = ImageIO.read(this.getClass().getResource("/img/yn.png"));
@@ -94,108 +99,14 @@ public class App extends JFrame implements ActionListener {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 		
 		
 		
 
 	}
 
-	@SuppressWarnings("resource")
-	private void readFile(File file, Properties prop) {
-
-		String propLine = null;
-		BufferedReader in = null;
-		try {
-
-			in = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
-
-			String key = file.getName().substring(file.getName().lastIndexOf(".") + 1, file.getName().length());
-
-			System.out.println("key=" + key);
-			if (!prop.containsKey(key.toLowerCase())) {
-				throw new RuntimeException("缺少参数配置，请检查cfg.properties 文件， " + file.getName());
-			}
-
-			String params = prop.getProperty(key.toLowerCase());
-			String[] values = params.split("@@");
-
-			if (values.length < 4) {
-				throw new RuntimeException("缺少参数配置，请检查cfg.properties文件， key=" + key.toLowerCase());
-			}
-
-			int codeIndex = Integer.valueOf(values[0]) - 1;
-			int nameIndex = Integer.valueOf(values[1]) - 1;
-			int startRow = Integer.valueOf(values[2]);
-
-			System.out.println("startRow=" + startRow);
-			System.out.println("codeIndex=" + codeIndex);
-			System.out.println("nameIndex=" + nameIndex);
-			
-			String splitStr = values[3];
-
-			int maxColumnIndex = (Integer.valueOf(values[0]) < Integer.valueOf(values[1]) ? Integer.valueOf(values[1])
-					: Integer.valueOf(values[0]));
-
-			System.out.println("maxColumnIndex=" + maxColumnIndex);
-
-			int i = 0;
-
-			while ((propLine = in.readLine()) != null) {
-				i++;
-				if (i < startRow) {
-					System.out.println("continue" + i);
-					continue;
-				}
-				
-				if (propLine.length() != 0) {
-					//System.out.println(propLine);
-					String trimLine = propLine.trim();
-
-					String[] tmp = trimLine.split(splitStr);
-
-					if (tmp.length >= maxColumnIndex) {
-						
-						codeObj.put(tmp[codeIndex], tmp[nameIndex]);
-						nameObj.put(tmp[nameIndex], tmp[codeIndex]);						
-						
-					}
-				}
-			}
-
-			System.out.println("i=" + i + "  mapsize=" + codeObj.size());
-
-		} catch (UnsupportedEncodingException e) {
-			throw new RuntimeException("无法以utf8模式访问文件：" + file.getName(), e);
-		} catch (FileNotFoundException e) {
-			throw new RuntimeException("无法访问文件：" + file.getName(), e);
-		} catch (IOException e) {
-			throw new RuntimeException("无法读取文件：" + file.getName(), e);
-		} finally {
-			try {
-				in.close();
-			} catch (IOException e) {
-				System.out.println("系统错误！！！");
-			}
-		}
-
-	}
-
-	private File[] getFiles(String dir) {
-		File f = new File(dir);
-
-		File[] allFiles = f.listFiles(new FileFilter() {// 过滤掉目录
-			public boolean accept(File f) {
-				// f.getName().endsWith("log");
-				return f.isFile() ? true : false;
-			}
-		});
-
-		// System.out.println(allFiles.length);
-
-		return allFiles;
-	}
-
+		
 	private JComboBox<String> getJComboBox() {
 		if (jcomBox == null) {
 			jcomBox = new JComboBox<String>();
@@ -224,8 +135,9 @@ public class App extends JFrame implements ActionListener {
 			jLabel3 = new javax.swing.JLabel();
 			// jLabel3.setBounds(10, 10, 150, 30);
 			// jLabel3.setFont(new Font(Font.DIALOG_INPUT, Font.BOLD, 16));
-			jLabel3.setText("");
+			jLabel3.setText("wangmh@noahark.com");
 
+			/*
 			BufferedImage image = null;
 
 			try {
@@ -236,6 +148,7 @@ public class App extends JFrame implements ActionListener {
 			}
 
 			jLabel3.setIcon(new ImageIcon(image));
+			*/
 
 		}
 
@@ -285,11 +198,23 @@ public class App extends JFrame implements ActionListener {
 		if (jButton1 == null) {
 			jButton1 = new JButton();
 			// jButton1.setBounds(530, 10, 100, 30);
-			jButton1.setText("清除单行注释");
+			jButton1.setText("清除所有单行注释");
 			jButton1.setActionCommand("clearSingleLineComments");
 			jButton1.addActionListener(this);
 		}
 		return jButton1;
+	}
+	
+	
+	private JButton getJButton4() {
+		if (jButton4 == null) {
+			jButton4 = new JButton();
+			// jButton1.setBounds(530, 10, 100, 30);
+			jButton4.setText("清除别名注释**");
+			jButton4.setActionCommand("clearSingleLineNewComments");
+			jButton4.addActionListener(this);
+		}
+		return jButton4;
 	}
 
 	private JButton getJButtonzero() {
@@ -345,21 +270,27 @@ public class App extends JFrame implements ActionListener {
 			}
 		}
 
+		
+		ReadFile readFile = new ReadFile();
 
 		App w = new App();
 
 		// read files
-		File[] fs = w.getFiles("data");
+		File[] fs = readFile.getFiles("data");
 
 		for (int i = 0; i < fs.length; i++) {
 			// String key = fs[i].getName().replaceAll("[.][^.]+$", "");
 			try {
-				w.readFile(fs[i], prop);
+				List<HspObject> list = readFile.readFile(fs[i], prop);
+				w.initMap(list);				
+				
 			} catch (Exception e) {
 				System.out.println(e);
 			}
 		}
 
+		
+	
 		w.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		//open form
@@ -367,6 +298,14 @@ public class App extends JFrame implements ActionListener {
 
 	}
 
+	public void initMap(List<HspObject> list){
+		for (int i = 0;i < list.size();i++){
+			HspObject obj = list.get(i);
+			codeObj.put(obj.getObjectCode(), obj.getObjectName());
+			nameObj.put(obj.getObjectName(), obj.getObjectCode());
+			
+		}
+	}
 	public void actionPerformed(ActionEvent e) {
 		String source = e.getActionCommand();
 		System.out.println("ActionCommand=" + source);
@@ -385,7 +324,7 @@ public class App extends JFrame implements ActionListener {
 
 				Map<String, String> keyWord = new HashMap<String, String>();
 
-				String clean = AnalyzerMember.clearSingleLineComments(tmp);
+				String clean = AnalyzerMember.clearSingleLineNewComments(tmp);
 
 				String clean2 = AnalyzerMember.clearAllComments(clean);
 
@@ -396,22 +335,30 @@ public class App extends JFrame implements ActionListener {
 
 				for (Entry<String, String> entryset : keyWord.entrySet()) {
 					StringBuffer sbr = new StringBuffer();
-					String key = entryset.getKey();
+					String key = entryset.getKey().replaceAll("\\{", "\\\\{").replaceAll("\\.", "\\\\.");
 					String value = entryset.getValue();
-					Pattern pattern = Pattern.compile("([\\s+-/%\\*>=\\(,;]*)(" + key + ")([\\)\\s+-/%\\*>=,;]{1,})");
+					
+					System.out.println("key=" + key + ", value=" + value);
+					
+					
+					Pattern pattern = Pattern.compile("([\\s+\\-/%\\*>=\\(,;]*)(" + key + ")([\\)\\s+\\-/%\\*>=,;]{1,})");
+					//                                "([\\s+\\-/%\\*><=\\(,;]*)([^,\"@()\\.\\s]+?)([\\)\\s+\\-/%\\*><=,;]{1,})"
 					Matcher matcher = pattern.matcher(clean);
 
 					while (matcher.find()) {
+						System.out.println("found " + key);;
 						matcher.appendReplacement(sbr, matcher.group(1) + value + matcher.group(3));
 					}
 
 					matcher.appendTail(sbr);
 
-					clean = sbr.toString();
+					clean = sbr.toString();					
+				
 				}
 
-				// System.out.println("data = " + clean);
+				//System.out.println("data = " + clean);
 				jtextarea.setText(clean);
+				
 			}
 
 		}
@@ -428,6 +375,14 @@ public class App extends JFrame implements ActionListener {
 
 		}
 
+		if (source.equals("clearSingleLineNewComments")){
+			
+			String tmp = jtextarea.getText();
+			if (tmp != null && tmp.length() > 0) {
+				String clean = AnalyzerMember.clearSingleLineNewComments(tmp);
+				jtextarea.setText(clean);
+			}
+		}
 		// 清除文本
 		if (source.equals("clearAreaText")) {
 			jtextarea.setText("");
@@ -442,11 +397,13 @@ public class App extends JFrame implements ActionListener {
 
 				for (Entry<String, String> entryset : keyWord.entrySet()) {
 					StringBuffer sbr = new StringBuffer();
-					String key = entryset.getKey();
+					String key = entryset.getKey().replaceAll("\\{", "\\\\{").replaceAll("\\.", "\\\\.");
 					String value = entryset.getValue();
 					Pattern pattern = Pattern.compile("([\\s+-/%\\*>=\\(,;]*)(" + key + ")([\\)\\s+-/%\\*>=,;]{1,})");
 					Matcher matcher = pattern.matcher(tmp);
 
+					System.out.println("key=" + key + ", value=" + value);
+					
 					while (matcher.find()) {
 						matcher.appendReplacement(sbr, matcher.group(1) + value + matcher.group(3));
 					}
